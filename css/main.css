@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Gothic&family=Merriweather:ital,wght@1,300&family=Open+Sans:ital,wght@1,300&family=Oswald&display=swap');
+
+
+* {
+    box-sizing: border-box;
+    font-family: Vazirmatn, serif;
+}
+
+body {
+
+    margin: 20px 20px 0;
+    background-image: url("./images/neon.jpg");
+    background-size:cover;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10vw;
+    width: 100%;
+}
+
+.form-control {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2vw;
+}
+
+
+input[type="text"] {
+    border: 2px solid black;
+    box-sizing: border-box;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    font-size: larger;
+    flex-grow: 2;
+}
+
+select {
+    flex-grow: 0;
+}
+
+
+button {
+    background-color: rgb(247, 194, 176);
+    font-size: large;
+    font-weight: bold;
+    padding: 5px 7px;
+    border-radius: .4em;
+    color: rgb(134, 10, 10);
+    border: 2px solid skyblue;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.509) 5px 5px 10px 5px;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+button:hover {
+    background-color: rgb(225, 142, 205);
+    font-weight: normal;
+}
+
+button:active {
+    animation: overlay 3s forwards;
+}
+
+#data-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 30px;
+    margin: 10px 2rem;
+}
+
+.doc {
+    width: 100%;
+    /* border: 2px solid #000; */
+    border-radius: 10px;
+    padding: 10px;
+    background: transparent;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(50px);
+    box-shadow: rgba(0, 0, 0, 0.658) 0 5px 10px 5px;
+}
+
+.doc a, .tag{
+    color:rgb(161, 21, 91)
+}
+
+
+
+
+.top {
+    animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(-5em);
+    }
+}
+
+.overlay {
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    background-color: black;
+    z-index: 1;
+    place-content: center;
+    color: beige;
+    display: none;
+
+}
+
+@keyframes overlay {
+    10% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    70% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+
+}
