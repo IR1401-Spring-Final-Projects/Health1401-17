@@ -55,6 +55,10 @@ class BooleanRecommender():
         self.doc_token = []
         self.column_list = set()
 
+    def get_sim(self, query_vector, doc_vector):
+        cosine_sim = cosine_similarity([query_vector, doc_vector])
+        return cosine_sim[0][1]
+
     def run(self):
         try:
             self.boolean_df = np.load("models_data\\booleanVector.npy")
@@ -82,20 +86,20 @@ class BooleanRecommender():
 
     def recommend(self, query, k=10):
         query_tokens = list(set(clean_data(query)))
+        query_vector = [
+            1 if token in query_tokens else 0 for token in self.column_list]
+
         doc_score = []
-        for doc in self.boolean_df:  # getting document score based on contained queries
-            score = 0
-            for token in query_tokens:
-                if token in self.column_list:
-                    score += doc[self.column_list.index(token)]
-            doc_score.append(score)
 
-        # getting k highest scores
-        similar = np.argpartition(doc_score, -k)[-k:]
+        for doc in self.boolean_df:
+            doc_score.append(self.get_sim(doc, query_vector))
 
-        matched_documents = self.document_list.loc[similar, :]
+            # getting k highest scores
+            similar = np.argpartition(doc_score, -k)[-k:]
 
-        return matched_documents
+            matched_documents = self.document_list.loc[similar, :]
+
+            return matched_documents
 
 
 class TfIdfRecommender():
