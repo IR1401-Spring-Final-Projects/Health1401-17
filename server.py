@@ -5,7 +5,7 @@ import elastic_search
 
 app = FastAPI()
 initial = ir_system.Initial()
-initial_elastic = elastic_search.ElasticsearchResult()
+# initial_elastic = elastic_search.ElasticsearchResult()
 
 @app.get('/')
 def index():
