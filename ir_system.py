@@ -434,7 +434,7 @@ class Initial:
         self.classifier = Classification(self.namnak)
         self.cluster = Clustering(self.namnak)
 
-    def find_target(self, query, action):
+    def find_target(self, query, action, query_expand):
         if action == 'cluster':
             return self.cluster.cluster(query)
         elif action == 'classify':
@@ -442,11 +442,11 @@ class Initial:
         elif action == 'boolean':
             return self.boolean.recommend(query).to_dict('records')
         elif action == 'tfidf':
-            return self.tfidf.recommend(query).to_dict('records')
+            return self.tfidf.expanded_recommend(query).to_dict('records') if query_expand else self.tfidf.recommend(query).to_dict('records')
         elif action == 'transformer':
-            return self.transformer.recommend(query).to_dict('records')
+            return self.transformer.expanded_recommend(query).to_dict('records') if query_expand else self.transformer.recommend(query).to_dict('records')
         elif action == 'fasttext':
-            return self.fasttext.recommend(query).to_dict('records')
+            return self.fasttext.expanded_recommend(query).to_dict('records') if query_expand else self.fasttext.recommend(query).to_dict('records')
 
 # import pandas as pd
 # import numpy as np
