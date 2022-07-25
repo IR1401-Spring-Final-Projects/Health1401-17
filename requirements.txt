@@ -1,0 +1,12 @@
+python modules:
+    pandas
+    numpy
+    sklearn
+    sentence_transformers
+    hazm
+    gensim
+    fastapi
+    uvicorn
+
+chrome extensions:
+    Moesif Origin & CORS changer

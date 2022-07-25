@@ -10,7 +10,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.model_selection import train_test_split
 from sklearn.cluster import KMeans
 from sklearn.feature_extraction.text import TfidfVectorizer
-import io
 
 import hazm
 
@@ -18,7 +17,6 @@ from sentence_transformers import SentenceTransformer, util
 
 from gensim.models import FastText
 from gensim.test.utils import get_tmpfile
-from soupsieve import match
 
 normalizer = None
 stop_words = None
