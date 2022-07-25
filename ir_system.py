@@ -149,14 +149,15 @@ class TfIdfRecommender():
         return matched_documents
 
     def recommend(self, query, k=10):
+        document_vectors = np.loadnp.load("models_data\\tfidfVectors.npy")
         query = " ".join(clean_data(query))
         query_vector = self.vectorizer.fit_transform(
             [query]).toarray()  # getting query vector
         query_features = self.vectorizer.get_feature_names_out()
         query_vector = [query_vector[0][np.where(query_features == word)[
             0][0]] if word in query_features else 0 for word in self.vocabulary]  # expanding the vector to the feature vector
-        rate = np.array([self.get_sim(query_vector, self.document_vectors[i]) for i in range(
-            self.document_vectors.shape[0])], dtype=float)  # calculating cosine similarity and rating
+        rate = np.array([self.get_sim(query_vector, document_vectors[i]) for i in range(
+            document_vectors.shape[0])], dtype=float)  # calculating cosine similarity and rating
         similars = np.argpartition(rate, -k)[-k:]
 
         matched_documents = self.document_list.loc[similars, :]
@@ -348,7 +349,6 @@ class Classification:
             self.model = sklearn.linear_model.LogisticRegression(
                 random_state=0).fit(X_train, y_train)
             joblib.dump(self.model, "models_data\\classifierModel.joblib")
-            return self.trans_model
 
     def classify(self, term):
         query_vector = self.transformer.make_vector(term)

@@ -1,54 +1,55 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <link rel="stylesheet" href="./css/main.css" />
 
-  <link rel="stylesheet" href="./css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Merriweather:ital,wght@1,300&family=Open+Sans:ital,wght@1,300&family=Oswald&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="./js_code/script.js" defer></script>
+  </head>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=League+Gothic&family=Merriweather:ital,wght@1,300&family=Open+Sans:ital,wght@1,300&family=Oswald&display=swap"
-    rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-  <script src="./js_code/script.js" defer></script>
+  <body>
+    <div class="form-container">
+      <form>
+        <input type="text" id="query" placeholder="کوئری خود را وارد کنید" />
+        <div class="form-control">
+          <select name="" id="select">
+            <optgroup label="سیستم توصیه‌گر">
+              <option value="boolean" selected>boolean</option>
+              <option value="tfidf">TfIdf</option>
+              <option value="transformer">Transformer</option>
+              <option value="fasttext">Fasttext</option>
+              <!-- <option value="4">جست‌جوی گسترش یافته</option> -->
+            </optgroup>
 
-</head>
+            <optgroup label="">
+              <option value="classify">دسته‌بندی</option>
+              <option value="cluster">خوشه‌بندی</option>
+            </optgroup>
+          </select>
+          <span>
+            <input type="checkbox" value="expand" id="expand" />
+            <label for="expand">گسترش کوئری</label>
+          </span>
+          <button type="button" id="cta-btn">جست و جو</button>
+        </div>
+      </form>
+    </div>
 
-<body>
-
-  <div class="form-container">
-    <form>
-      <input type="text" id="query" placeholder="کوئری خود را وارد کنید">
-      <div class="form-control">
-        <select name="" id="select">
-
-          <optgroup label="سیستم توصیه‌گر">
-            <option value="boolean" selected>boolean</option>
-            <option value="tfidf">TfIdf</option>
-            <option value="transformer">Transformer</option>
-            <option value="fasttext">Fasttext</option>
-            <!-- <option value="4">جست‌جوی گسترش یافته</option> -->
-          </optgroup>
-
-          <optgroup label="">
-            <option value="classify">دسته‌بندی</option>
-            <option value="cluster">خوشه‌بندی</option>
-          </optgroup>
-
-        </select>
-        <button type="button" id="cta-btn">جست و جو</button>
-      </div>
-    </form>
-  </div>
-
-  <div id="data-section"></div>
-
-
-</body>
-
+    <div id="data-section"></div>
+  </body>
 </html>
