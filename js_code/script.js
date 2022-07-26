@@ -1,6 +1,7 @@
 let button = document.getElementById("cta-btn");
 let option = document.getElementById("select");
 let query = document.getElementById("query");
+let expand = document.getElementById("expand");
 let dataSection = document.getElementById("data-section");
 
 function snippStructure(title, abstract, link, tags) {
@@ -16,11 +17,11 @@ function snippStructure(title, abstract, link, tags) {
 function printDocs(data) {
     dataSection.innerHTML = "";
     console.log(typeof data)
-    if (data['isClassification']===true){
+    if (data['isClassification'] === true) {
         dataSection.innerHTML = `<div class="doc">کوئری شما در طبقه <span class="tag"> ${data['result']} </span>قرار میگیرد.</div>`
         return
     }
-    if (option.value==="cluster"){
+    if (option.value === "cluster") {
         dataSection.innerHTML = "<p>5 داک از خوشه‌ای که کوئری شما در آن قرار گرفته است مطابق زیر می‌باشد.</p>"
     }
     for (doc of data) {
@@ -33,8 +34,8 @@ function printDocs(data) {
 }
 
 button.addEventListener("click", () => {
-    fetch(`http://localhost:8000/result?query=${query.value}&action_type=${option.value}`)
-    .then(res => res.json())
-.then(data => {printDocs(data)})
-.catch(err => console.log(err));
+    fetch(`http://localhost:8000/result?query=${query.value}&action_type=${option.value}&query_expand=${expand.checked}`)
+        .then(res => res.json())
+        .then(data => { printDocs(data) })
+        .catch(err => console.log(err));
 });
