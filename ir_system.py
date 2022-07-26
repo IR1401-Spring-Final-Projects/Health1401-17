@@ -1,4 +1,3 @@
-from pydoc import doc
 import pandas as pd
 import numpy as np
 import os
@@ -55,9 +54,11 @@ class BooleanRecommender():
         self.doc_token = []
         self.column_list = set()
 
+
     def get_sim(self, query_vector, doc_vector):
         cosine_sim = cosine_similarity([query_vector, doc_vector])
         return cosine_sim[0][1]
+
 
     def run(self):
         try:
@@ -84,30 +85,49 @@ class BooleanRecommender():
             with open("models_data\\booleanColumns.txt", "w", encoding="utf-8") as file:
                 file.write("\n".join(self.column_list))
 
+
+    def expanded_recommend(self, query, k=10):
+        query_tokens = list(set(clean_data(query)))
+        query_vector = [
+            1 if token in query_tokens else 0 for token in self.column_list]
+        doc_score = []
+        for doc in self.boolean_df:
+          doc_score.append(self.get_sim(doc, query_vector))
+        # getting k highest scores
+        similars = np.argpartition(doc_score, -k)[-k:]
+        irrelevants = np.argpartition(doc_score, k)[:k]
+
+        matched_documents = self.document_list.loc[similars, :]
+        relevant_docs = np.array([self.boolean_df[x] for x in similars])
+        irrelevant_docs = np.array([self.boolean_df[x] for x in irrelevants])
+        modified_query = improve_query(
+            relevant_docs, irrelevant_docs, query_vector)
+        better_doc_score = []
+        for doc in self.boolean_df:
+          better_doc_score.append(self.get_sim(doc, modified_query))
+        # getting k highest scores
+        better_similars = np.argpartition(doc_score, -k)[-k:]
+        matched_documents = self.document_list.loc[better_similars, :]
+        return matched_documents
+
+
     def recommend(self, query, k=10):
         query_tokens = list(set(clean_data(query)))
         query_vector = [
             1 if token in query_tokens else 0 for token in self.column_list]
-
         doc_score = []
-
         for doc in self.boolean_df:
-            doc_score.append(self.get_sim(doc, query_vector))
-
+          doc_score.append(self.get_sim(doc, query_vector))
             # getting k highest scores
-            similar = np.argpartition(doc_score, -k)[-k:]
-
-            matched_documents = self.document_list.loc[similar, :]
-
-            return matched_documents
+        similars = np.argpartition(doc_score, -k)[-k:]
+        matched_documents = self.document_list.loc[similars, :]
+        return matched_documents
 
 
 class TfIdfRecommender():
     def __init__(self, document_list):
         self.document_list = document_list.copy()
-        # preparing the vectorizer model
         self.vectorizer = TfidfVectorizer(analyzer='word', ngram_range=(1, 3))
-        # self.document_vectors = None
         self.vocabulary = []
 
     def get_sim(self, query_vector, doc_vector):
@@ -422,7 +442,6 @@ def getNamnakData():
     return document_list
 
 
-
 def change_data_frame_to_dict(document_list):
   doc_dict_list = []
   for i in range(len(document_list)):
@@ -435,6 +454,7 @@ def change_data_frame_to_dict(document_list):
       }
     )
   return doc_dict_list
+
 
 class Initial:
   def __init__(self):
@@ -461,7 +481,7 @@ class Initial:
       elif action == 'classify':
           return self.classifier.classify(query)
       elif action == 'boolean':
-          return self.boolean.recommend(query).to_dict('records')
+         return self.boolean.expanded_recommend(query).to_dict('records') if query_expand else self.boolean.recommend(query).to_dict('records')
       elif action == 'tfidf':
           return self.tfidf.expanded_recommend(query).to_dict('records') if query_expand else self.tfidf.recommend(query).to_dict('records')
       elif action == 'transformer':
