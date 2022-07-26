@@ -24,6 +24,9 @@ function printDocs(data) {
     if (option.value === "cluster") {
         dataSection.innerHTML = "<p>5 داک از خوشه‌ای که کوئری شما در آن قرار گرفته است مطابق زیر می‌باشد.</p>"
     }
+    if (option.value === "elastic") {
+        data = data.hits.hits.map(value => value['_source'])
+    }
     for (doc of data) {
         let title = doc.title;
         let abstract = doc.abstract || doc.paragraphs;

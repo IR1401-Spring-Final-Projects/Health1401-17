@@ -1,6 +1,4 @@
 from elasticsearch import Elasticsearch
-from tqdm import tqdm
-
 
 class ElasticSearchResult:
     def __init__(self, cloud_id, elastic_user, elastic_password):
@@ -31,5 +29,6 @@ class ElasticSearchResult:
                 }
             }
         }
+        print(body)
         out = self.client.search(index=self._INDEX, body=body)
         return out

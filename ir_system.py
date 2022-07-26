@@ -173,7 +173,7 @@ class TfIdfRecommender():
         return matched_documents
 
     def recommend(self, query, k=10):
-        document_vectors = np.loadnp.load("models_data\\tfidfVectors.npy")
+        document_vectors = np.load("models_data\\tfidfVectors.npy")
         query = " ".join(clean_data(query))
         query_vector = self.vectorizer.fit_transform(
             [query]).toarray()  # getting query vector
@@ -311,8 +311,7 @@ class EmbedRecommender():
 
     def recommend(self, query, k=10):
         query = clean_data(query)
-        print(type(self.model), type(self.model['کبد']))
-        query_vector = np.mean([self.model[x]
+        query_vector = np.mean([self.model.wv[x]
                                for word in query for x in word.split()], axis=0)
 
         rate = np.array([self.get_sim(query_vector, vector)
@@ -405,7 +404,7 @@ class Clustering:
         return docs
 
 
-def improve_query(relevant_docs, irrelevant_docs, initial_query, alpha=0, beta=1, gamma=1):
+def improve_query(relevant_docs, irrelevant_docs, initial_query, alpha=1, beta=0.75, gamma=0.15):
     d_r = np.sum(relevant_docs, axis=0)
     d_nr = np.sum(irrelevant_docs, axis=0)
     modified_query_vector = alpha * initial_query + \
@@ -473,6 +472,9 @@ class Initial:
       self.cluster = Clustering(self.namnak)
       self.initial_elastic = elastic_search.ElasticSearchResult('Health1401-17:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvOjQ0MyQ4MzU4MDM4MzY1YTc0M2Q1OTUyNDgxMGI4NmVhMjUzZSQyNWNkOTc5NWU2Zjg0ZDFhOGExM2YyNDFiNzFiY2JiMg==', 'elastic', 'UPPq9NWiZfjqRiZf0KLezTtc')
       self.initial_elastic.indexing(change_data_frame_to_dict(hiDoctor))
+    #   self.initial_elastic.delete_doc() # incase we want to delete documents from our deployment
+
+
 
 
   def find_target(self, query, action, query_expand):
@@ -489,4 +491,5 @@ class Initial:
       elif action == 'fasttext':
           return self.fasttext.expanded_recommend(query).to_dict('records') if query_expand else self.fasttext.recommend(query).to_dict('records')
       elif action == 'elastic':
-          return self.initial_elastic.search(query)
+          print('hi')
+          return self.initial_elastic.search(" ".join(clean_data(query)))

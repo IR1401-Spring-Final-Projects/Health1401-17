@@ -1,7 +1,7 @@
-from os import stat
 from fastapi import FastAPI
 import ir_system
 import elastic_search
+
 
 app = FastAPI()
 initial = ir_system.Initial()
@@ -9,6 +9,7 @@ initial = ir_system.Initial()
 
 @app.get('/')
 def index():
+    
     return 'connected!'
 
 
