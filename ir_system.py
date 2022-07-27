@@ -102,6 +102,8 @@ class BooleanRecommender():
         irrelevant_docs = np.array([self.boolean_df[x] for x in irrelevants])
         modified_query = improve_query(
             relevant_docs, irrelevant_docs, query_vector)
+        modified_query = improve_query(
+            relevant_docs, irrelevant_docs, modified_query)
         better_doc_score = []
         for doc in self.boolean_df:
           better_doc_score.append(self.get_sim(doc, modified_query))
@@ -165,6 +167,8 @@ class TfIdfRecommender():
         irrelevant_docs = np.array([document_vectors[x] for x in irrelevants])
         modified_query = improve_query(
             relevant_docs, irrelevant_docs, query_vector)
+        modified_query = improve_query(
+            relevant_docs, irrelevant_docs, modified_query)
 
         better_rate = np.array([self.get_sim(modified_query, document_vectors[i]) for i in range(
             document_vectors.shape[0])], dtype=float)  # calculating cosine similarity and rating
@@ -222,6 +226,8 @@ class TransformerRecommender():
             [self.document_vectors[x] for x in irrelevants])
         modified_query = improve_query(
             relevant_docs, irrelevant_docs, query_vector)
+        modified_query = improve_query(
+            relevant_docs, irrelevant_docs, modified_query)
         # calculating cosine similarity and getting the k highest scores
         better_rate = list([util.cos_sim(modified_query, vector)
                            for vector in self.document_vectors])
@@ -302,6 +308,8 @@ class EmbedRecommender():
             [self.document_vectors[x] for x in irrelevants])
         modified_query = improve_query(
             relevant_docs, irrelevant_docs, query_vector)
+        modified_query = improve_query(
+            relevant_docs, irrelevant_docs, modified_query)
         better_rate = np.array([self.get_sim(modified_query, vector)
                                for vector in self.document_vectors])
         better_similars = np.argpartition(better_rate, -k)[-k:]
@@ -408,7 +416,7 @@ def improve_query(relevant_docs, irrelevant_docs, initial_query, alpha=1, beta=0
     d_r = np.sum(relevant_docs, axis=0)
     d_nr = np.sum(irrelevant_docs, axis=0)
     modified_query_vector = alpha * initial_query + \
-        ((beta * d_r) - (gamma * d_nr)/len(relevant_docs))
+        ((beta * d_r) - (gamma * d_nr))/len(relevant_docs)
 
     return modified_query_vector
 
